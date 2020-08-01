@@ -1,6 +1,7 @@
 #!/bin/bash
-#url=$(docker inspect php-test | grep IPA | tail -1 | awk -F\" '{print $4}'
-url="127.0.0.1:8080"
+url=$(docker inspect php-test | grep IPA | tail -1 | awk -F\" '{print $4}')
+url2="$url:8080"
+echo $url2
 status_code=$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' $url)
 date=`date`
 
