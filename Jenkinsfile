@@ -8,7 +8,8 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        sh 'git clone https://github.com/mguazzardo/s2i.git'
+        //sh 'git clone https://github.com/mguazzardo/s2i.git'
+          git 'https://github.com/mguazzardo/ggal.git'
       }
     }
     stage('Building image') {
@@ -32,7 +33,7 @@ pipeline {
                 sh  '''
                     echo 'probando con curl'
                     chmod +x curl_test2.sh
-                     ./curl_test.sh
+                     ./curl_test2.sh
                     '''
             }
         }
