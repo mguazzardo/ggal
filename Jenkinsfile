@@ -26,5 +26,16 @@ pipeline {
            '''
         }
       }
+
+    stage('Test') {
+            steps {
+                sh  '''
+                    echo 'probando con curl'
+                    chmod +x curl_test2.sh
+                     ./curl_test.sh
+                    '''
+            }
+        }
+
   }
 }

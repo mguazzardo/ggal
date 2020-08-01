@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+            sh '''
+                    echo "Bajo mi git"
+                    echo "Compilo mi imagen"
+                    docker build -t apache:01 .
+                    '''
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh  '''
+                    echo "Lanzo el contenedor"
+                    docker run -d --name apache apache:01
+                    '''
+            }
+        }
+        stage('Test') {
+            steps {
+                sh  '''
+		    echo 'probando el curl'
+                    chmod +x curl_test.sh
+                     ./curl_test.sh
+                    '''
+            }
+        }
+        stage('Push') {
+            steps {
+                sh  '''
+                    echo 'subiendo la imagen a nexus'
+                    docker tag apache:01 192.168.56.4:8123/apache:01
+                    docker login 192.168.56.4:8123 -u admin -p master
+                    docker push 192.168.56.4:8123/apache:01
+                    '''
+            }
+        }
+    }
+    post
+        {
+            always
+            {
+            	sh '''
+                echo "borramos la imagen compilada,y el contenedor"
+                docker rm -fv apache
+                docker rmi apache:01 
+                docker rmi 192.168.56.4:8123/apache:01 
+                '''
+            }
+        }
+
+}
