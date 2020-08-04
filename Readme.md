@@ -6,4 +6,8 @@ para crear artifacts.
 
 El builder que usaremos será php7, la imagen, una imagen de centos 7.1, y con eso generaremos la imagen ( Etapa de build ).
 
+La imagen elegida cumple con las condiciones de 1) No correr como root 2) Levantar un port > 1024, ya que si lo quisieramos correr en OCP, deberíamos correrlo con un scc.
+
+(Y no creo que el banco homologue una imagen que corra como root).
+
 Para la etapa de testing, ejecutamos un script de bash que haga un curl al puerto 8080, para ver que haya levantado correctamente el contenedor.
