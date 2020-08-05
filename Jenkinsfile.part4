@@ -15,10 +15,11 @@ pipeline {
     
    stage('Building image') {
       steps{
-        script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          sh '''
+          s2i build https://github.com/mguazzardo/ggal.git centos/php-71-centos7 php-test-app
+          dockerImage = 'php-test-app'
+             '''  
         }
-      }
     }
    stage('Deploy Image') {
       steps{
