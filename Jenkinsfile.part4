@@ -2,7 +2,7 @@ pipeline {
   environment {
     registry = "mguazzardo/ggal"
     registryCredential = 'nexus'
-    dockerImage = ''
+    dockerImage = 'php-test-app'
   }
   agent any
   stages {
@@ -17,8 +17,6 @@ pipeline {
       steps{
           sh '''
           s2i build https://github.com/mguazzardo/ggal.git centos/php-71-centos7 php-test-app
-          dockerImage = 'php-test-app'
-          echo $dockerImage
              '''  
         }
     }
