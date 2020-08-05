@@ -1,6 +1,4 @@
-**Este es un ejercicio para el examen del banco galicia**
-
-## Escenario de Ansible (ansible-101) 
+## Este es un ejercicio para el examen de devops del banco galicia 
 
 
 Se nos pide un pipeline que se conecte al nuestro repositorio de codigo, haga un checkout, se baje las páginas, 
