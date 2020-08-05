@@ -17,7 +17,7 @@ pipeline {
       steps{
           sh '''
           s2i build https://github.com/mguazzardo/ggal.git centos/php-71-centos7 php-test-app
-          docker tag php-test-app 192.168.56.4:8123/mguazzardo/php-test-appp
+          docker tag php-test-app 192.168.56.4:8123/mguazzardo/php-test-app
              '''  
         }
     }
@@ -26,7 +26,6 @@ pipeline {
         script {
           docker.withRegistry( 'http://192.168.56.4:8123', registryCredential ) {
 
-            dockerImage.push()
           }
         }
       }
@@ -36,6 +35,7 @@ pipeline {
       steps{
         
         sh '''
+        docker pull 192.168.56.4:8123/mguazzardo/php-test-app
         docker run -d --name=php-test -p 8084:8080 php-test-app   
            '''
         }
