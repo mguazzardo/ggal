@@ -1,0 +1,54 @@
+pipeline {
+  environment {
+    registry = "mguazzardo/ggal"
+    registryCredential = 'nexus'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        //sh 'git clone https://github.com/mguazzardo/s2i.git'
+          git 'https://github.com/mguazzardo/ggal.git'
+      }
+    }
+    
+   stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+   stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( 'http://192.168.56.4:8123', registryCredential ) {
+
+            dockerImage.push()
+          }
+        }
+      }
+    }
+
+   stage('Run Container') {
+      steps{
+        
+        sh '''
+        docker run -d --name=php-test -p 8084:8080 php-test-app   
+           '''
+        }
+      }
+
+    stage('Test') {
+            steps {
+                sh  '''
+                    echo 'probando con curl'
+                    chmod +x curl_test2.sh
+                     ./curl_test2.sh
+                    '''
+            }
+        }
+
+  }
+}
