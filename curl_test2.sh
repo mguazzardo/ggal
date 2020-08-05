@@ -2,6 +2,7 @@
 url=$(docker inspect php-test | grep IPA | tail -1 | awk -F\" '{print $4}')
 url2="$url:8080"
 echo $url2
+sleep 5
 status_code=$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' $url2)
 date=`date`
 
