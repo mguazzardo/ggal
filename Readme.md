@@ -1,4 +1,4 @@
-**Este es un ejercicio para el examen del banco galicia**
+#Este es un ejercicio para el examen del banco galicia
 
 Se nos pide un pipeline que se conecte al nuestro repositorio de codigo, haga un checkout, se baje las páginas, 
 y luego como se nos pide correr el toolkit s2i, que si bien forma parte del OCP, se puede utilizar en forma independiente,
