@@ -5,5 +5,5 @@
   tasks:
     - name: "correr kubectl"
       shell:
-        cmd: kubectl run --image=eboraas/apache apache 
+        cmd: kubectl run --image=docker.io/mguazzardo/php-test:latest php-test 
 
