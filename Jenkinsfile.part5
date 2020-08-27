@@ -16,6 +16,7 @@ pipeline {
           sh '''
           s2i build https://github.com/mguazzardo/ggal.git centos/php-71-centos7 php-test-app
           docker tag php-test-app mguazzardo/php-test-app-new
+          docker logout
              '''  
         }
     }
