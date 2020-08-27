@@ -38,5 +38,13 @@ pipeline {
             }
         }
 
+    stage('Run kubectl'){
+             steps {
+                 sh  '''
+                     ansible-playbook playbook.yml
+                     '''
+                   }
+      }
+
   }
 }
