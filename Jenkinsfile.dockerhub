@@ -1,8 +1,7 @@
 pipeline {
   environment {
     registry = "mguazzardo/ggal"
-    registryCredential = 'nexus'
-    dockerImage = '192.168.56.4:8123/mguazzardo/php-test-app'
+    registryCredential = 'dockerhub'
   }
   agent any
   stages {
@@ -23,9 +22,11 @@ pipeline {
     }
    stage('Deploy Image') {
       steps{
-            withDockerRegistry([credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/']) {
-        docker push mguazzardo/php-test-app:02
-    }
+        script {
+          docker.withRegistry( 'https://index.docker.io/v1/', registryCredential ) {
+
+          }
+        }
       }
     }
 
@@ -33,6 +34,7 @@ pipeline {
       steps{
         
         sh '''
+        docker push mguazzardo/php-test-app:02
         docker run -d --name=php-test -p 8084:8080 php-test-app   
            '''
         }
