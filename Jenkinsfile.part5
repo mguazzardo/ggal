@@ -1,0 +1,68 @@
+pipeline {
+  environment {
+    registry = "mguazzardo/ggal"
+    registryCredential = 'dockerhub'
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+          git 'https://github.com/mguazzardo/ggal.git'
+      }
+    }
+    
+   stage('Building image') {
+      steps{
+          sh '''
+          s2i build https://github.com/mguazzardo/ggal.git centos/php-71-centos7 php-test-app
+          docker tag php-test-app mguazzardo/php-test-app-new
+             '''  
+        }
+    }
+   stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+
+          }
+        }
+      }
+    }
+
+   stage('Run Container') {
+      steps{
+        
+        sh '''
+        docker push mguazzardo/php-test-app-new
+        docker run -d --name=php-test -p 8084:8080 php-test-app   
+           '''
+        }
+      }
+
+    stage('Test') {
+            steps {
+                sh  '''
+                    echo 'probando con curl'
+                    chmod +x curl_test2.sh
+                     ./curl_test2.sh
+                    '''
+            }
+        }
+    
+
+
+
+  } // fin stages
+
+post {
+        always {
+            echo 'Estado de los Jobs'
+            
+            emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n Mas informacion en: ${env.BUILD_URL}",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            
+        }
+    }
+
+}
